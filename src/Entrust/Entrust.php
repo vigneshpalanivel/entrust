@@ -86,7 +86,7 @@ class Entrust
      */
     public function user()
     {
-        return $this->app->auth->user();
+        return $this->app->auth->admin()->user();
     }
 
     /**
