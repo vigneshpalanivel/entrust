@@ -127,7 +127,7 @@ class Entrust
             $hasPerm = $this->can($permissions, $requireAll);
 
             if (!$hasPerm) {
-                return empty($result) ? redirect('admin/login') : $result;
+                return empty($result) ?  $this->app->abort(403) : $result;
             }
         };
 
