@@ -123,11 +123,17 @@ class Entrust
         $filterName  = is_array($permissions) ? implode('_', $permissions) : $permissions;
         $filterName .= '_'.substr(md5($route), 0, 6);
 
-        $closure = function () use ($permissions, $result, $requireAll) {
+        $closure = function () use ($route, $permissions, $result, $requireAll) {
             $hasPerm = $this->can($permissions, $requireAll);
+            if(!$this->user())
+            {
+                $route_segments = explode('/', $route);
+                $admin_prefix = @$route_segments[0];
+                $result = redirect($admin_prefix.'/login');
+            }
 
             if (!$hasPerm) {
-                return empty($result) ?  $this->app->abort(403) : $result;
+                return empty($result) ? $this->app->abort(403) : $result;
             }
         };
 
